@@ -1,12 +1,12 @@
 $(function () {
-    // How old am I?
-    $("#age").text (yearsSince ("1995/3/5"));
+    // // How old am I?
+    // $("#age").text (yearsSince ("1995/3/5"));
 
-    // How many years playing guitar?
-    $("#guitar-age").text (yearsSince ("2003/7/30"));
+    // // How many years playing guitar?
+    // $("#guitar-age").text (yearsSince ("2003/7/30"));
 
     // Buy me a foo
-    var things = ["Beer", "Coffee", "Drink", "Pizza"];
+    var things = ["Projects", "Github", "Work"];
     $("#thing").text (things[Math.floor(Math.random()*things.length)]);
 });
 
