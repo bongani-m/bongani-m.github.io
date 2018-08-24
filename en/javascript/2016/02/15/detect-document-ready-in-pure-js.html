@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Detect document ready in pure JS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+                <li>
+                    <a href="/" class="logo"><i class="fa fa-superpowers" aria-hidden="true" style="
+                        font-size: 2em;
+                        margin: .5em;
+                    "></i></a>
+                </li>
+            </ul>
+            
+            <ul class="right">
+                <!-- <li>
+                    <a href="policy">
+                        <i class="fa fa-fw fa-bank"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="/dev-bytes">
+                         Dev Blog
+                    </a>
+                </li>
+            </ul>
+</nav>
+
+    <div class="container">
+        <h1>Detect document ready in pure JS  <span>February 15, 2016</span>  </h1>
+        <p>The cross-browser way to check if the document has loaded in pure JavaScript is using <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/readyState"><code class="highlighter-rouge">readyState</code></a>.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">===</span> <span class="s1">'complete'</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// The page is fully loaded</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You can detect when the document is ready…</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">let</span> <span class="nx">stateCheck</span> <span class="o">=</span> <span class="nx">setInterval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">===</span> <span class="s1">'complete'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">clearInterval</span><span class="p">(</span><span class="nx">stateCheck</span><span class="p">);</span>
+    <span class="c1">// document ready</span>
+  <span class="p">}</span>
+<span class="p">},</span> <span class="mi">100</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>or with <a href="https://developer.mozilla.org/en-US/docs/Web/Events/readystatechange">onreadystatechange</a>…</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">document</span><span class="p">.</span><span class="nx">onreadystatechange</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">===</span> <span class="s1">'complete'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// document ready</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Use <code class="highlighter-rouge">document.readyState === 'interactive'</code> to detect when the DOM is ready.</p>
+
+    </div>
+
+    <footer>
+        <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>
+        <ul>
+            <li class="animated pink">
+                <a href="https://dribbble.com/bmbigi" class="tooltip" data-tooltip="Dribbble" target="_blank">
+                    <i class="fa fa-dribbble fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated black">
+                <a href="https://github.com/bongani-m" class="tooltip" data-tooltip="GitHub" target="_blank">
+                    <i class="fa fa-github fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated instagram">
+                <a href="https://www.instagram.com/bmbigi/" class="tooltip" data-tooltip="Instagram" target="_blank">
+                    <i class="fa fa-instagram fa-2x"></i>
+                </a>
+            </li>
+            <li class="animated blue-twitter">
+                <a href="https://twitter.com/bmbigi" class="tooltip" data-tooltip="Twitter" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated yellow">
+                <a href="mailto:bonganim@utexas.edu" class="tooltip" data-tooltip="Email" target="_blank">
+                    <i class="fa fa-envelope fa-lg"></i>
+                </a>
+            </li>
+        </ul>
+</footer>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ES6, var vs let</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+                <li>
+                    <a href="/" class="logo"><i class="fa fa-superpowers" aria-hidden="true" style="
+                        font-size: 2em;
+                        margin: .5em;
+                    "></i></a>
+                </li>
+            </ul>
+            
+            <ul class="right">
+                <!-- <li>
+                    <a href="policy">
+                        <i class="fa fa-fw fa-bank"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="/dev-bytes">
+                         Dev Blog
+                    </a>
+                </li>
+            </ul>
+</nav>
+
+    <div class="container">
+        <h1>ES6, var vs let  <span>August 25, 2016</span>  </h1>
+        <h3 id="overview">Overview</h3>
+
+<ul>
+  <li>The scope of a variable defined with <code class="highlighter-rouge">var</code> is function scope or declared outside any function, global.</li>
+  <li>The scope of a variable defined with <code class="highlighter-rouge">let</code> is block scope.</li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">varvslet</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span> <span class="c1">// i is undefined due to hoisting</span>
+  <span class="c1">// console.log(j); // ReferenceError: j is not defined</span>
+
+  <span class="k">for</span><span class="p">(</span> <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span> <span class="c1">// 0, 1, 2</span>
+  <span class="p">};</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span> <span class="c1">// 3</span>
+  <span class="c1">// console.log(j); // ReferenceError: j is not defined</span>
+
+  <span class="k">for</span><span class="p">(</span> <span class="kd">let</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">j</span><span class="p">);</span>
+  <span class="p">};</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span> <span class="c1">// 3</span>
+  <span class="c1">// console.log(j); // ReferenceError: j is not defined</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="difference-details">Difference Details</h3>
+
+<ul>
+  <li>
+    <p>Variable Hoisting</p>
+
+    <p><code class="highlighter-rouge">let</code> will not hoist to the entire scope of the block they appear in. By contrast, <code class="highlighter-rouge">var</code> could hoist as below.</p>
+  </li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">c</span><span class="p">);</span> <span class="c1">// undefined. Due to hoisting</span>
+  <span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span> <span class="c1">// ReferenceError: b is not defined</span>
+  <span class="kd">let</span> <span class="nx">b</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Closure in Loop</p>
+
+    <p><code class="highlighter-rouge">let</code> in the loop can re-binds it to each iteration of the loop, making sure to re-assign it the value from the end of the previous loop iteration, so it can be used to avoid issue with closures.</p>
+  </li>
+</ul>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span> <span class="c1">// output '5' 5 times</span>
+  <span class="p">},</span> <span class="mi">100</span><span class="p">);</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>After replacing <code class="highlighter-rouge">var</code> with <code class="highlighter-rouge">let</code></p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// print 1, 2, 3, 4, 5</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span> <span class="c1">// output 0, 1, 2, 3, 4 </span>
+  <span class="p">},</span> <span class="mi">100</span><span class="p">);</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="should-i-replace-var-with-let">Should I replace <code class="highlighter-rouge">var</code> with <code class="highlighter-rouge">let</code>?</h3>
+
+<blockquote>
+  <p>NO, <code class="highlighter-rouge">let</code> is the new block scoping <code class="highlighter-rouge">var</code>. That statement emphasizes that <code class="highlighter-rouge">let</code> should replace <code class="highlighter-rouge">var</code> only when <code class="highlighter-rouge">var</code> was already signaling
+block scoping stylistically. Otherwise, leave <code class="highlighter-rouge">var</code> alone. <code class="highlighter-rouge">let</code> improves scoping options in JS, not replaces. <code class="highlighter-rouge">var</code> is still a useful signal for variables that are used throughout the function.</p>
+</blockquote>
+
+<h3 id="let-compatibility"><code class="highlighter-rouge">let</code> compatibility</h3>
+
+<ul>
+  <li>
+    <p>In server side, such as Node.js, you can safely use the <code class="highlighter-rouge">let</code> statement now.</p>
+  </li>
+  <li>
+    <p>In client side, through a transpiler (like <a href="https://github.com/google/traceur-compiler">Traceur</a>), you can safely use the <code class="highlighter-rouge">let</code> statement. Otherwise, please consider the browser support <a href="http://caniuse.com/#search=let">here</a></p>
+  </li>
+</ul>
+
+<h3 id="playground">Playground</h3>
+<div>
+  <a class="jsbin-embed" href="http://jsbin.com/yumaye/embed?js,console">JS Bin on jsbin.com</a><script src="http://static.jsbin.com/js/embed.min.js?3.39.11"></script>
+</div>
+
+<h3 id="more-info">More info</h3>
+
+<ul>
+  <li><a href="http://stackoverflow.com/questions/762011/let-keyword-vs-var-keyword">Let keyword vs var keyword</a></li>
+  <li><a href="https://davidwalsh.name/for-and-against-let">For and against let</a></li>
+  <li><a href="http://stackoverflow.com/questions/30899612/explanation-of-let-and-block-scoping-with-for-loops/30900289#30900289">Explanation of <code class="highlighter-rouge">let</code> and block scoping with for loops</a>.</li>
+</ul>
+
+    </div>
+
+    <footer>
+        <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>
+        <ul>
+            <li class="animated pink">
+                <a href="https://dribbble.com/bmbigi" class="tooltip" data-tooltip="Dribbble" target="_blank">
+                    <i class="fa fa-dribbble fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated black">
+                <a href="https://github.com/bongani-m" class="tooltip" data-tooltip="GitHub" target="_blank">
+                    <i class="fa fa-github fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated instagram">
+                <a href="https://www.instagram.com/bmbigi/" class="tooltip" data-tooltip="Instagram" target="_blank">
+                    <i class="fa fa-instagram fa-2x"></i>
+                </a>
+            </li>
+            <li class="animated blue-twitter">
+                <a href="https://twitter.com/bmbigi" class="tooltip" data-tooltip="Twitter" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated yellow">
+                <a href="mailto:bonganim@utexas.edu" class="tooltip" data-tooltip="Email" target="_blank">
+                    <i class="fa fa-envelope fa-lg"></i>
+                </a>
+            </li>
+        </ul>
+</footer>
+</body>
+</html>

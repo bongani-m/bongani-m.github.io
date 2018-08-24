@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Pseudomandatory parameters in ES6 functions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+                <li>
+                    <a href="/" class="logo"><i class="fa fa-superpowers" aria-hidden="true" style="
+                        font-size: 2em;
+                        margin: .5em;
+                    "></i></a>
+                </li>
+            </ul>
+            
+            <ul class="right">
+                <!-- <li>
+                    <a href="policy">
+                        <i class="fa fa-fw fa-bank"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="/dev-bytes">
+                         Dev Blog
+                    </a>
+                </li>
+            </ul>
+</nav>
+
+    <div class="container">
+        <h1>Pseudomandatory parameters in ES6 functions  <span>January 12, 2016</span>  </h1>
+        <p>In many programming languages the parameters of a function are by default mandatory and the developer has to explicitly define that a parameter is optional. In Javascript, every parameter is optional, but we can enforce this behavior without messing with the actual body of a function, taking advantage of [<strong>es6’s default values for parameters</strong>] (http://exploringjs.com/es6/ch_parameter-handling.html#sec_parameter-default-values) feature.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">_err</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">message</span> <span class="p">){</span>
+  <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span> <span class="nx">message</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">getSum</span> <span class="o">=</span> <span class="p">(</span><span class="nx">a</span> <span class="o">=</span> <span class="nx">_err</span><span class="p">(</span><span class="s1">'a is not defined'</span><span class="p">),</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">_err</span><span class="p">(</span><span class="s1">'b is not defined'</span><span class="p">))</span> <span class="o">=&gt;</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span>
+
+<span class="nx">getSum</span><span class="p">(</span> <span class="mi">10</span> <span class="p">)</span> <span class="c1">// throws Error, b is not defined</span>
+<span class="nx">getSum</span><span class="p">(</span> <span class="kc">undefined</span><span class="p">,</span> <span class="mi">10</span> <span class="p">)</span> <span class="c1">// throws Error, a is not defined</span>
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">_err</code> is a function that immediately throws an Error. If no value is passed for one of the parameters, the default value is going to be used, <code class="highlighter-rouge">_err</code> will be called and an Error will be thrown. You can see more examples for the <strong>default parameters feature</strong> on <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/default_parameters">Mozilla’s Developer Network </a></p>
+
+    </div>
+
+    <footer>
+        <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>
+        <ul>
+            <li class="animated pink">
+                <a href="https://dribbble.com/bmbigi" class="tooltip" data-tooltip="Dribbble" target="_blank">
+                    <i class="fa fa-dribbble fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated black">
+                <a href="https://github.com/bongani-m" class="tooltip" data-tooltip="GitHub" target="_blank">
+                    <i class="fa fa-github fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated instagram">
+                <a href="https://www.instagram.com/bmbigi/" class="tooltip" data-tooltip="Instagram" target="_blank">
+                    <i class="fa fa-instagram fa-2x"></i>
+                </a>
+            </li>
+            <li class="animated blue-twitter">
+                <a href="https://twitter.com/bmbigi" class="tooltip" data-tooltip="Twitter" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated yellow">
+                <a href="mailto:bonganim@utexas.edu" class="tooltip" data-tooltip="Email" target="_blank">
+                    <i class="fa fa-envelope fa-lg"></i>
+                </a>
+            </li>
+        </ul>
+</footer>
+</body>
+</html>

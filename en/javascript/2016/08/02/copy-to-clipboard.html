@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
+    <title>Copy to Clipboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/main.css" />
     <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
 </head>
 <body>
     <nav>
@@ -35,26 +35,24 @@
             </ul>
 </nav>
 
-    <style type="text/css" media="screen">
-  .container {
-    margin: 10px auto;
-    max-width: 600px;
-    text-align: center;
-  }
-  h1 {
-    margin: 30px 0;
-    font-size: 4em;
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-</style>
+    <div class="container">
+        <h1>Copy to Clipboard  <span>August 02, 2016</span>  </h1>
+        <p>This is a simple tip, this week I had to create a common “Copy to Clipboard” button, I’ve never created one before and I want to share how I made it.
+It’s easy, the bad thing is that we must add an <code class="highlighter-rouge">&lt;input/&gt;</code> with the text to be copied to the DOM. Then, we selected the content and execute the copy command with <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand">execCommand</a>.
+<code class="highlighter-rouge">execCommand('copy')</code> will copy the actual selected content.</p>
 
-<div class="container">
-  <h1>404</h1>
+<p>Also, this command that now is <a href="http://caniuse.com/#search=execCommand">supported</a> by all the latest version of browsers, allows us to execute another system commands like <code class="highlighter-rouge">copy</code>, <code class="highlighter-rouge">cut</code>, <code class="highlighter-rouge">paste</code>, and make changes like fonts color, size, and much more.</p>
 
-  <p><strong>Page not found :(</strong></p>
-  <p>The requested page could not be found.</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'#input'</span><span class="p">).</span><span class="nx">select</span><span class="p">();</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">execCommand</span><span class="p">(</span><span class="s1">'copy'</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h5 id="playground">Playground</h5>
+<div>
+  <a class="jsbin-embed" href="http://jsbin.com/huhozu/embed?js,output">JS Bin on jsbin.com</a><script src="http://static.jsbin.com/js/embed.min.js?3.39.11"></script>
 </div>
+
+    </div>
 
     <footer>
         <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>

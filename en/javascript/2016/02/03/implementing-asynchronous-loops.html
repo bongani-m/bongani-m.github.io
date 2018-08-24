@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Implementing asynchronous loop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+                <li>
+                    <a href="/" class="logo"><i class="fa fa-superpowers" aria-hidden="true" style="
+                        font-size: 2em;
+                        margin: .5em;
+                    "></i></a>
+                </li>
+            </ul>
+            
+            <ul class="right">
+                <!-- <li>
+                    <a href="policy">
+                        <i class="fa fa-fw fa-bank"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="/dev-bytes">
+                         Dev Blog
+                    </a>
+                </li>
+            </ul>
+</nav>
+
+    <div class="container">
+        <h1>Implementing asynchronous loop  <span>February 03, 2016</span>  </h1>
+        <p>Let’s try out writing an asynchronous function which prints the value of the loop index every second.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span> 
+	<span class="p">},</span> <span class="mi">1000</span> <span class="o">*</span> <span class="p">(</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>  
+</code></pre></div></div>
+<p>The output of the above programs turns out to be</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="mi">5</span>
+<span class="o">&gt;</span> <span class="mi">5</span>
+<span class="o">&gt;</span> <span class="mi">5</span>
+<span class="o">&gt;</span> <span class="mi">5</span>
+<span class="o">&gt;</span> <span class="mi">5</span>
+</code></pre></div></div>
+<p>So this definitely doesn’t work.</p>
+
+<p><strong>Reason</strong></p>
+
+<p>Each timeout refers to the original <code class="highlighter-rouge">i</code>, not a copy. So the for loop increments <code class="highlighter-rouge">i</code> until it gets to 5, then the timeouts run and use the current value of <code class="highlighter-rouge">i</code> (which is 5).</p>
+
+<p>Well , this problem seems easy. An immediate solution that strikes is to cache the loop index in a temporary variable.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">temp</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+ 	<span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">temp</span><span class="p">);</span> 
+	<span class="p">},</span> <span class="mi">1000</span> <span class="o">*</span> <span class="p">(</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>  
+</code></pre></div></div>
+<p>But again the output of the above programs turns out to be</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;</span> <span class="mi">4</span>
+<span class="o">&gt;</span> <span class="mi">4</span>
+<span class="o">&gt;</span> <span class="mi">4</span>
+<span class="o">&gt;</span> <span class="mi">4</span>
+<span class="o">&gt;</span> <span class="mi">4</span>
+</code></pre></div></div>
+
+<p>So , that doesn’t work either , because blocks don’t create a scope and variables initializers are hoisted to the top of the scope. In fact, the previous block is the same as:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">temp</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+ 	<span class="nx">temp</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+	<span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">temp</span><span class="p">);</span> 
+  	<span class="p">},</span> <span class="mi">1000</span> <span class="o">*</span> <span class="p">(</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>  
+</code></pre></div></div>
+<p><strong>Solution</strong></p>
+
+<p>There are a few different ways to copy <code class="highlighter-rouge">i</code>. The most common way is creating a closure by declaring a function and passing <code class="highlighter-rouge">i</code> as an argument. Here we do this as a self-calling function.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+	<span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">num</span><span class="p">){</span>
+		<span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">num</span><span class="p">);</span> 
+		<span class="p">},</span> <span class="mi">1000</span> <span class="o">*</span> <span class="p">(</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span> 
+	<span class="p">})(</span><span class="nx">i</span><span class="p">);</span>  
+<span class="p">}</span>  
+</code></pre></div></div>
+<p>In JavaScript, arguments are passed by value to a function. So primitive types like numbers, dates, and strings are basically copied. If you change them inside the function, it does not affect the outside scope. Objects are special: if the inside function changes a property, the change is reflected in all scopes.</p>
+
+<p>Another approach for this would be with using <code class="highlighter-rouge">let</code>. With ES6 the <code class="highlighter-rouge">let</code> keyword is useful since it’s block scoped unlike <code class="highlighter-rouge">var</code></p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+ 	<span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span> 
+	<span class="p">},</span> <span class="mi">1000</span> <span class="o">*</span> <span class="p">(</span><span class="nx">i</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>  
+</code></pre></div></div>
+
+    </div>
+
+    <footer>
+        <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>
+        <ul>
+            <li class="animated pink">
+                <a href="https://dribbble.com/bmbigi" class="tooltip" data-tooltip="Dribbble" target="_blank">
+                    <i class="fa fa-dribbble fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated black">
+                <a href="https://github.com/bongani-m" class="tooltip" data-tooltip="GitHub" target="_blank">
+                    <i class="fa fa-github fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated instagram">
+                <a href="https://www.instagram.com/bmbigi/" class="tooltip" data-tooltip="Instagram" target="_blank">
+                    <i class="fa fa-instagram fa-2x"></i>
+                </a>
+            </li>
+            <li class="animated blue-twitter">
+                <a href="https://twitter.com/bmbigi" class="tooltip" data-tooltip="Twitter" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated yellow">
+                <a href="mailto:bonganim@utexas.edu" class="tooltip" data-tooltip="Email" target="_blank">
+                    <i class="fa fa-envelope fa-lg"></i>
+                </a>
+            </li>
+        </ul>
+</footer>
+</body>
+</html>

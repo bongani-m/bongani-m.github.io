@@ -35,26 +35,30 @@
             </ul>
 </nav>
 
-    <style type="text/css" media="screen">
-  .container {
-    margin: 10px auto;
-    max-width: 600px;
-    text-align: center;
-  }
-  h1 {
-    margin: 30px 0;
-    font-size: 4em;
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-</style>
+    <a href="/blog">blog</a>
 
-<div class="container">
-  <h1>404</h1>
+EDUCATION
+The University Of Texas at Austin 										                    2018 Bachelors of Science in Mathematics with Certificate in CS and Business		
 
-  <p><strong>Page not found :(</strong></p>
-  <p>The requested page could not be found.</p>
-</div>
+TECHNICAL SKILLS   				
+•  NodeJS (MEAN Stack)						•  Automated BDD testing
+• RESTFUL API Development					• Spring Framework (Boot, MVC, Data)
+• Front End Javascript Experience (ReactJS/ Redux, Angular 2+)	• .NET Core Framework (.net core) 
+
+
+Blackbaud								                                                       May 2018- Present  Software Developer Intern													• Developed on the workflow application working with Angular and Spring.
+• Was able to utilize Service Bus and Scheduling on Azure
+
+Hudl								                                                             May 2017- August 2017 Software Developer Intern													• Developed on the highlights editor application working with GraphQL and ReactJS/Redux.
+• Worked on the backend of auto generated Game Recaps application with in the .net framework
+
+Union  Pacific							                                                        August 2016- January 2017  Software Developer Intern													• Continued developing modular front end application used in production for Train Management using Angular JS		             
+• Extended server-side APIs utilizing Spring MVC.
+
+State Farm 							               June 2015- August 2015, June 2016- August 2016        Software Developer Intern													•  Developed BDD driven automated testing system framework that integrated into the Continuous Integration Pipeline. Utilized jUnit, and Selenium Framework. Created Onboarding material and presentation for incoming employees. 
+• Utilized the Spring Framework, Java EE, Apache Avro. Worked on Products team to develop solution to scale big data needs for mobile applications.  
+
+University of Texas Libraries							                            August 2015- June 2016     Software Developer Intern													              •   Developed and maintain internal solutions for Perry-Castañeda Library. Worked on AngularJS - ASP.net MVC applications and Mac Development with Swift.
 
     <footer>
         <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>

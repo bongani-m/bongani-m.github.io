@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Fat Arrow Functions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+                <li>
+                    <a href="/" class="logo"><i class="fa fa-superpowers" aria-hidden="true" style="
+                        font-size: 2em;
+                        margin: .5em;
+                    "></i></a>
+                </li>
+            </ul>
+            
+            <ul class="right">
+                <!-- <li>
+                    <a href="policy">
+                        <i class="fa fa-fw fa-bank"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="/dev-bytes">
+                         Dev Blog
+                    </a>
+                </li>
+            </ul>
+</nav>
+
+    <div class="container">
+        <h1>Fat Arrow Functions  <span>January 14, 2016</span>  </h1>
+        <p>Introduced as a new feature in ES6, fat arrow functions may come as a handy tool to write more code in fewer lines. The name comes from its syntax, <code class="highlighter-rouge">=&gt;</code>, which is a ‘fat arrow’, as compared to a thin arrow <code class="highlighter-rouge">-&gt;</code>. Some programmers might already know this type of function from different languages such as Haskell, as ‘lambda expressions’, or as ‘anonymous functions’. It is called anonymous, as these arrow functions do not have a descriptive function name.</p>
+
+<h3 id="what-are-the-benefits">What are the benefits?</h3>
+<ul>
+  <li>Syntax: fewer LOC; no more typing <code class="highlighter-rouge">function</code> keyword over and over again</li>
+  <li>Semantics: capturing the keyword <code class="highlighter-rouge">this</code> from the surrounding context</li>
+</ul>
+
+<h3 id="simple-syntax-example">Simple syntax example</h3>
+<p>Have a look at these two code snippets, which do the exact same job, and you will quickly understand what fat arrow functions do:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// general syntax for fat arrow functions</span>
+<span class="nx">param</span> <span class="o">=&gt;</span> <span class="nx">expression</span>
+
+<span class="c1">// may also be written with parentheses</span>
+<span class="c1">// parentheses are required on multiple params</span>
+<span class="p">(</span><span class="nx">param1</span> <span class="p">[,</span> <span class="nx">param2</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="nx">expression</span>
+
+
+<span class="c1">// using functions</span>
+<span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">1</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">arrFunc</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">x</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span>
+
+<span class="c1">// using fat arrow</span>
+<span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">1</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">arrFunc</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">x</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">x</span><span class="o">*</span><span class="nx">x</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>As you can see, the fat arrow function in this case can save you time typing out the parentheses as well as the function and return keywords. I would advise you to always write parentheses around the parameter inputs, as the parentheses will be needed for multiple input parameters, such as in <code class="highlighter-rouge">(x,y) =&gt; x+y</code>. It is just a way to cope with forgetting them in different use cases. But the code above would also work like this: <code class="highlighter-rouge">x =&gt; x*x</code>. So far, these are only syntactical improvements, which lead to fewer LOC and better readability.</p>
+
+<h3 id="lexically-binding-this">Lexically binding <code class="highlighter-rouge">this</code></h3>
+
+<p>There is another good reason to use fat arrow functions. There is the issue with the context of <code class="highlighter-rouge">this</code>. With arrow functions, you don’t need to worry about <code class="highlighter-rouge">.bind(this)</code> or setting <code class="highlighter-rouge">that = this</code> anymore, as fat arrow functions pick the context of <code class="highlighter-rouge">this</code> from the lexical surrounding. Have a look at the next [example] (https://jsfiddle.net/pklinger/rw94oc11/):</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// globally defined this.i</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">counterA</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">CounterA</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">counterB</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">CounterB</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">counterC</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">CounterC</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">counterD</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">CounterD</span><span class="p">();</span>
+
+<span class="c1">// bad example</span>
+<span class="kd">function</span> <span class="nx">CounterA</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// CounterA's `this` instance (!! gets ignored here)</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// `this` refers to global object, not to CounterA's `this`</span>
+    <span class="c1">// therefore starts counting with 100, not with 0 (local this.i)</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">"counterA"</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="p">;</span>
+  <span class="p">},</span> <span class="mi">500</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// manually binding that = this</span>
+<span class="kd">function</span> <span class="nx">CounterB</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+  <span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">that</span><span class="p">.</span><span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">"counterB"</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">that</span><span class="p">.</span><span class="nx">i</span><span class="p">;</span>
+  <span class="p">},</span> <span class="mi">500</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// using .bind(this)</span>
+<span class="kd">function</span> <span class="nx">CounterC</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">"counterC"</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="p">;</span>
+  <span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">),</span> <span class="mi">500</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// fat arrow function</span>
+<span class="kd">function</span> <span class="nx">CounterD</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="nx">setInterval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="o">++</span><span class="p">;</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">"counterD"</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">i</span><span class="p">;</span>
+  <span class="p">},</span> <span class="mi">500</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Further information about fat arrow functions may be found at [MDN] (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions). To see different syntax options visit [this site] (http://jsrocks.org/2014/10/arrow-functions-and-their-scope/).</p>
+
+    </div>
+
+    <footer>
+        <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>
+        <ul>
+            <li class="animated pink">
+                <a href="https://dribbble.com/bmbigi" class="tooltip" data-tooltip="Dribbble" target="_blank">
+                    <i class="fa fa-dribbble fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated black">
+                <a href="https://github.com/bongani-m" class="tooltip" data-tooltip="GitHub" target="_blank">
+                    <i class="fa fa-github fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated instagram">
+                <a href="https://www.instagram.com/bmbigi/" class="tooltip" data-tooltip="Instagram" target="_blank">
+                    <i class="fa fa-instagram fa-2x"></i>
+                </a>
+            </li>
+            <li class="animated blue-twitter">
+                <a href="https://twitter.com/bmbigi" class="tooltip" data-tooltip="Twitter" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated yellow">
+                <a href="mailto:bonganim@utexas.edu" class="tooltip" data-tooltip="Email" target="_blank">
+                    <i class="fa fa-envelope fa-lg"></i>
+                </a>
+            </li>
+        </ul>
+</footer>
+</body>
+</html>

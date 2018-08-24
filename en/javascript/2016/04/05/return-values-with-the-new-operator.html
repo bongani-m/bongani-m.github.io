@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Return Values with the &#39;new&#39; Operator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+                <li>
+                    <a href="/" class="logo"><i class="fa fa-superpowers" aria-hidden="true" style="
+                        font-size: 2em;
+                        margin: .5em;
+                    "></i></a>
+                </li>
+            </ul>
+            
+            <ul class="right">
+                <!-- <li>
+                    <a href="policy">
+                        <i class="fa fa-fw fa-bank"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="/dev-bytes">
+                         Dev Blog
+                    </a>
+                </li>
+            </ul>
+</nav>
+
+    <div class="container">
+        <h1>Return Values with the &#39;new&#39; Operator  <span>April 05, 2016</span>  </h1>
+        <p>You’re going to run into some instances where you’ll be using <code class="highlighter-rouge">new</code> to allocate new objects in JavaScript. It’s going to blow your mind unless you read this tip to understand what’s happening behind the scenes.</p>
+
+<p>The <code class="highlighter-rouge">new</code> operator in JavaScript is an operator that, under reasonable circumstances, returns a new instance of an object. Let’s say we have a constructor function:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Thing</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">one</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">two</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">myThing</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Thing</span><span class="p">();</span>
+
+<span class="nx">myThing</span><span class="p">.</span><span class="nx">one</span> <span class="c1">// 1</span>
+<span class="nx">myThing</span><span class="p">.</span><span class="nx">two</span> <span class="c1">// 2</span>
+</code></pre></div></div>
+
+<p><strong>Note</strong>: <code class="highlighter-rouge">this</code> refers to the new object created by <code class="highlighter-rouge">new</code>. Otherwise if <code class="highlighter-rouge">Thing()</code> is called without <code class="highlighter-rouge">new</code>, <strong>no object is created</strong>, and <code class="highlighter-rouge">this</code> is going to point to the global object, which is <code class="highlighter-rouge">window</code>. This means that:</p>
+
+<ol>
+  <li>You’ll suddenly have two new global variables named <code class="highlighter-rouge">one</code> and <code class="highlighter-rouge">two</code>.</li>
+  <li><code class="highlighter-rouge">myThing</code> is now undefined, since nothing is returned in <code class="highlighter-rouge">Thing()</code>.</li>
+</ol>
+
+<p>Now that you get that example, here’s where things get a little bit wonky. Let’s say I add something to the constructor function, a little SPICE:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Thing</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">one</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">two</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+
+  <span class="k">return</span> <span class="mi">5</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">myThing</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Thing</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>Now, what does myThing equal? Is it 5? is it an object? Is it my crippled sense of self-worth? The world may never know!</p>
+
+<p>Except the world does know:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">myThing</span><span class="p">.</span><span class="nx">one</span> <span class="c1">// 1</span>
+<span class="nx">myThing</span><span class="p">.</span><span class="nx">two</span> <span class="c1">// 2</span>
+</code></pre></div></div>
+
+<p>Interestingly enough, we never actually see the five that we supposedly ‘returned’ from our constructor. That’s weird, isn’t it? What are you doing function? WHERE’S THE FIVE? Let’s try it with something else.</p>
+
+<p>Let’s return a non-primitive type instead, something like an object.</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Thing</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">one</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">two</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="na">three</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="na">four</span><span class="p">:</span> <span class="mi">4</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">myThing</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Thing</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>Let’s check it out. A quick console.log reveals all:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myThing</span><span class="p">);</span>
+<span class="cm">/*
+  Object {three: 3, four: 4}
+  What happened to this.one and this.two!?
+  They've been stomped, my friend.
+*/</span>
+</code></pre></div></div>
+
+<p><strong>Here’s where we learn:</strong> When you invoke a function with the <code class="highlighter-rouge">new</code> keyword, you can set properties on it using the keyword <code class="highlighter-rouge">this</code> (but you probably already knew that). Returning a primitive value from a function you called with the <code class="highlighter-rouge">new</code> keyword will not return the value you specified, but instead will return the <code class="highlighter-rouge">this</code> instance of the function (the one you put properties on, like <code class="highlighter-rouge">this.one = 1;</code>).</p>
+
+<p>However, returning a non-primitive, like an <code class="highlighter-rouge">object</code>, <code class="highlighter-rouge">array</code>, or <code class="highlighter-rouge">function</code> will stomp on the <code class="highlighter-rouge">this</code> instance, and return that non-primitive instead, effectively ruining all the hard work you did assigning everything to <code class="highlighter-rouge">this</code>.</p>
+
+    </div>
+
+    <footer>
+        <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>
+        <ul>
+            <li class="animated pink">
+                <a href="https://dribbble.com/bmbigi" class="tooltip" data-tooltip="Dribbble" target="_blank">
+                    <i class="fa fa-dribbble fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated black">
+                <a href="https://github.com/bongani-m" class="tooltip" data-tooltip="GitHub" target="_blank">
+                    <i class="fa fa-github fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated instagram">
+                <a href="https://www.instagram.com/bmbigi/" class="tooltip" data-tooltip="Instagram" target="_blank">
+                    <i class="fa fa-instagram fa-2x"></i>
+                </a>
+            </li>
+            <li class="animated blue-twitter">
+                <a href="https://twitter.com/bmbigi" class="tooltip" data-tooltip="Twitter" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated yellow">
+                <a href="mailto:bonganim@utexas.edu" class="tooltip" data-tooltip="Email" target="_blank">
+                    <i class="fa fa-envelope fa-lg"></i>
+                </a>
+            </li>
+        </ul>
+</footer>
+</body>
+</html>

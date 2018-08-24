@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>How to `reduce()` arrays</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+                <li>
+                    <a href="/" class="logo"><i class="fa fa-superpowers" aria-hidden="true" style="
+                        font-size: 2em;
+                        margin: .5em;
+                    "></i></a>
+                </li>
+            </ul>
+            
+            <ul class="right">
+                <!-- <li>
+                    <a href="policy">
+                        <i class="fa fa-fw fa-bank"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="/dev-bytes">
+                         Dev Blog
+                    </a>
+                </li>
+            </ul>
+</nav>
+
+    <div class="container">
+        <h1>How to `reduce()` arrays  <span>February 17, 2016</span>  </h1>
+        <p>As written in documentation the <code class="highlighter-rouge">reduce()</code> method applies a function against an accumulator and each value of the array (from left-to-right) to reduce it to a single value.</p>
+
+<h3 id="signature">Signature</h3>
+
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce">reduce()</a> function accepts 2 parameters (M: mandatory, O: optional):</p>
+
+<ul>
+  <li>(M) a callback <strong>reducer function</strong> to be applied that deals with a pair of previous (result of previous computation) and next element until end of the list.</li>
+  <li>(O) an <strong>initial value</strong> to be used as the first argument to the first call of the callback.</li>
+</ul>
+
+<p>So let’s see a common usage and later a more sophisticated one.</p>
+
+<h3 id="common-usage-accumulation-concatenation">Common usage (accumulation, concatenation)</h3>
+
+<p>We are on Amazon website (prices in $) and our caddy is quite full, let’s compute total.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// my current amazon caddy purchases</span>
+<span class="kd">var</span> <span class="nx">items</span> <span class="o">=</span> <span class="p">[{</span><span class="na">price</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span> <span class="p">{</span><span class="na">price</span><span class="p">:</span> <span class="mi">120</span><span class="p">},</span> <span class="p">{</span><span class="na">price</span><span class="p">:</span> <span class="mi">1000</span><span class="p">}];</span>
+
+<span class="c1">// our reducer function</span>
+<span class="kd">var</span> <span class="nx">reducer</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">sumSoFar</span><span class="p">,</span> <span class="nx">item</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">sumSoFar</span> <span class="o">+</span> <span class="nx">item</span><span class="p">.</span><span class="nx">price</span><span class="p">;</span> <span class="p">};</span>
+
+<span class="c1">// do the job</span>
+<span class="kd">var</span> <span class="nx">total</span> <span class="o">=</span> <span class="nx">items</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">reducer</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">total</span><span class="p">);</span> <span class="c1">// 1130</span>
+</code></pre></div></div>
+
+<p>Optional reduce function parameter was primitive integer type 0 in that first case, but it could have been an Object, an Array…instead of a primitive type,
+but we will see that later.</p>
+
+<p>Now, cool I received a discount coupon of 20$.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">total</span> <span class="o">=</span> <span class="nx">items</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">reducer</span><span class="p">,</span><span class="o">-</span><span class="mi">20</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">total</span><span class="p">);</span> <span class="c1">// 1110</span>
+</code></pre></div></div>
+
+<h3 id="advanced-usage-combination">Advanced usage (combination)</h3>
+
+<p>This second usage example is inspired by Redux <a href="http://redux.js.org/docs/api/combineReducers.html">combineReducers</a> function <a href="https://github.com/reactjs/redux/blob/master/src/combineReducers.js#L93">source</a>.</p>
+
+<p>Idea behind is to separate reducer function into separate individual functions and at the end compute a new <em>single big reducer function</em>.</p>
+
+<p>To illustrate this, let’s create a single object literal with some reducers function able to compute total prices in different currency $, €…</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">reducers</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">totalInDollar</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// specific statements...</span>
+    <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">dollars</span> <span class="o">+=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">price</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="na">totalInEuros</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">euros</span> <span class="o">+=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">price</span> <span class="o">*</span> <span class="mf">0.897424392</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="na">totalInPounds</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">pounds</span> <span class="o">+=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">price</span> <span class="o">*</span> <span class="mf">0.692688671</span><span class="p">;</span>
+  <span class="p">},</span>
+  <span class="na">totalInYen</span> <span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">state</span><span class="p">.</span><span class="nx">yens</span> <span class="o">+=</span> <span class="nx">item</span><span class="p">.</span><span class="nx">price</span> <span class="o">*</span> <span class="mf">113.852</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="c1">// more...</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Then, we create a new swiss knife function</p>
+
+<ul>
+  <li>responsible for applying each partial reduce functions.</li>
+  <li>that will return a new callback reducer function</li>
+</ul>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">combineTotalPriceReducers</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">reducers</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">function</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">item</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">reducers</span><span class="p">).</span><span class="nx">reduce</span><span class="p">(</span>
+      <span class="kd">function</span><span class="p">(</span><span class="nx">nextState</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">reducers</span><span class="p">[</span><span class="nx">key</span><span class="p">](</span><span class="nx">state</span><span class="p">,</span> <span class="nx">item</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nx">state</span><span class="p">;</span>
+      <span class="p">},</span>
+      <span class="p">{}</span>      
+    <span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Now let’s see how using it.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">bigTotalPriceReducer</span> <span class="o">=</span> <span class="nx">combineTotalPriceReducers</span><span class="p">(</span><span class="nx">reducers</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">initialState</span> <span class="o">=</span> <span class="p">{</span><span class="na">dollars</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">euros</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span> <span class="na">yens</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="na">pounds</span><span class="p">:</span> <span class="mi">0</span><span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">totals</span> <span class="o">=</span> <span class="nx">items</span><span class="p">.</span><span class="nx">reduce</span><span class="p">(</span><span class="nx">bigTotalPriceReducer</span><span class="p">,</span> <span class="nx">initialState</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">totals</span><span class="p">);</span>
+
+<span class="cm">/*
+Object {dollars: 1130, euros: 1015.11531904, yens: 127524.24, pounds: 785.81131152}
+*/</span>
+</code></pre></div></div>
+
+<p>I hope this approach can give you another idea of using reduce() function for your own needs.</p>
+
+<p>Your reduce function could handle an history of each computation by instance as it is done in Ramdajs with <a href="http://ramdajs.com/docs/#scan">scan</a> function</p>
+
+<p><a href="https://jsfiddle.net/darul75/81tgt0cd/">JSFiddle to play with</a></p>
+
+    </div>
+
+    <footer>
+        <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>
+        <ul>
+            <li class="animated pink">
+                <a href="https://dribbble.com/bmbigi" class="tooltip" data-tooltip="Dribbble" target="_blank">
+                    <i class="fa fa-dribbble fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated black">
+                <a href="https://github.com/bongani-m" class="tooltip" data-tooltip="GitHub" target="_blank">
+                    <i class="fa fa-github fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated instagram">
+                <a href="https://www.instagram.com/bmbigi/" class="tooltip" data-tooltip="Instagram" target="_blank">
+                    <i class="fa fa-instagram fa-2x"></i>
+                </a>
+            </li>
+            <li class="animated blue-twitter">
+                <a href="https://twitter.com/bmbigi" class="tooltip" data-tooltip="Twitter" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated yellow">
+                <a href="mailto:bonganim@utexas.edu" class="tooltip" data-tooltip="Email" target="_blank">
+                    <i class="fa fa-envelope fa-lg"></i>
+                </a>
+            </li>
+        </ul>
+</footer>
+</body>
+</html>

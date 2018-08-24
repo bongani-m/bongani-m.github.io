@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Assignment Operators</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+                <li>
+                    <a href="/" class="logo"><i class="fa fa-superpowers" aria-hidden="true" style="
+                        font-size: 2em;
+                        margin: .5em;
+                    "></i></a>
+                </li>
+            </ul>
+            
+            <ul class="right">
+                <!-- <li>
+                    <a href="policy">
+                        <i class="fa fa-fw fa-bank"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="/dev-bytes">
+                         Dev Blog
+                    </a>
+                </li>
+            </ul>
+</nav>
+
+    <div class="container">
+        <h1>Assignment Operators  <span>February 04, 2016</span>  </h1>
+        <p>Assigning is very common. Sometimes typing becomes time consuming for us ‘Lazy programmers’.
+So, we can use some tricks to help us and make our code cleaner and simpler.</p>
+
+<p>This is the similar use of</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">x</span> <span class="o">+=</span> <span class="mi">23</span><span class="p">;</span> <span class="c1">// x = x + 23;</span>
+<span class="nx">y</span> <span class="o">-=</span> <span class="mi">15</span><span class="p">;</span> <span class="c1">// y = y - 15;</span>
+<span class="nx">z</span> <span class="o">*=</span> <span class="mi">10</span><span class="p">;</span> <span class="c1">// z = z * 10;</span>
+<span class="nx">k</span> <span class="o">/=</span> <span class="mi">7</span><span class="p">;</span> <span class="c1">// k = k / 7;</span>
+<span class="nx">p</span> <span class="o">%=</span> <span class="mi">3</span><span class="p">;</span> <span class="c1">// p = p % 3;</span>
+<span class="nx">d</span> <span class="o">**=</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">// d = d ** 2;</span>
+<span class="nx">m</span> <span class="o">&gt;&gt;=</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">// m = m &gt;&gt; 2;</span>
+<span class="nx">n</span> <span class="o">&lt;&lt;=</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">// n = n &lt;&lt; 2;</span>
+<span class="nx">n</span> <span class="o">++</span><span class="p">;</span> <span class="c1">// n = n + 1;</span>
+<span class="nx">n</span> <span class="o">--</span><span class="p">;</span> <span class="nx">n</span> <span class="o">=</span> <span class="nx">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+
+</code></pre></div></div>
+
+<h3 id="-and----operators"><code class="highlighter-rouge">++</code> and <code class="highlighter-rouge">--</code> operators</h3>
+
+<p>There is a special <code class="highlighter-rouge">++</code> operator. It’s best to explain it with an example:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">a</span><span class="o">++</span><span class="p">;</span>
+<span class="c1">// Now a is 3 and b is 2</span>
+</code></pre></div></div>
+
+<p>The <code class="highlighter-rouge">a++</code> statement does this:</p>
+<ol>
+  <li>return the value of <code class="highlighter-rouge">a</code></li>
+  <li>increment <code class="highlighter-rouge">a</code> by 1</li>
+</ol>
+
+<p>But what if we wanted to increment the value first? It’s simple:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="o">++</span><span class="nx">a</span><span class="p">;</span>
+<span class="c1">// Now both a and b are 3</span>
+</code></pre></div></div>
+
+<p>See? I put the operator <em>before</em> the variable.</p>
+
+<p>The <code class="highlighter-rouge">--</code> operator is similar, except it decrements the value.</p>
+
+<h3 id="if-else-using-ternary-operator">If-else (Using ternary operator)</h3>
+
+<p>This is what we write on regular basis.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">newValue</span><span class="p">;</span>
+<span class="k">if</span><span class="p">(</span><span class="nx">value</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span> 
+  <span class="nx">newValue</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="k">else</span>
+  <span class="nx">newValue</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>We can user ternary operator to make it awesome:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">newValue</span> <span class="o">=</span> <span class="p">(</span><span class="nx">value</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span> <span class="p">?</span> <span class="mi">5</span> <span class="p">:</span> <span class="mi">2</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="null-undefined-empty-checks">Null, Undefined, Empty Checks</h3>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="nx">variable1</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">||</span> <span class="nx">variable1</span> <span class="o">!==</span> <span class="kc">undefined</span> <span class="o">||</span> <span class="nx">variable1</span> <span class="o">!==</span> <span class="s1">''</span><span class="p">)</span> <span class="p">{</span>
+     <span class="kd">var</span> <span class="nx">variable2</span> <span class="o">=</span> <span class="nx">variable1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Shorthand here:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">variable2</span> <span class="o">=</span> <span class="nx">variable1</span>  <span class="o">||</span> <span class="s1">''</span><span class="p">;</span>
+</code></pre></div></div>
+<p>P.S.: If variable1 is a number, then first check if it is 0.</p>
+
+<h3 id="object-array-notation">Object Array Notation</h3>
+
+<p>Instead of using:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">();</span>
+<span class="nx">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"myString1"</span><span class="p">;</span>
+<span class="nx">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"myString2"</span><span class="p">;</span>
+</code></pre></div></div>
+<p>Use this:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"myString1"</span><span class="p">,</span> <span class="s2">"myString2"</span><span class="p">];</span>
+</code></pre></div></div>
+
+<h3 id="associative-array">Associative array</h3>
+
+<p>Instead of using:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">skillSet</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Array</span><span class="p">();</span>
+<span class="nx">skillSet</span><span class="p">[</span><span class="s1">'Document language'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'HTML5'</span><span class="p">;</span>
+<span class="nx">skillSet</span><span class="p">[</span><span class="s1">'Styling language'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'CSS3'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Use this:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">skillSet</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'Document language'</span> <span class="p">:</span> <span class="s1">'HTML5'</span><span class="p">,</span> 
+    <span class="s1">'Styling language'</span> <span class="p">:</span> <span class="s1">'CSS3'</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+    </div>
+
+    <footer>
+        <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>
+        <ul>
+            <li class="animated pink">
+                <a href="https://dribbble.com/bmbigi" class="tooltip" data-tooltip="Dribbble" target="_blank">
+                    <i class="fa fa-dribbble fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated black">
+                <a href="https://github.com/bongani-m" class="tooltip" data-tooltip="GitHub" target="_blank">
+                    <i class="fa fa-github fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated instagram">
+                <a href="https://www.instagram.com/bmbigi/" class="tooltip" data-tooltip="Instagram" target="_blank">
+                    <i class="fa fa-instagram fa-2x"></i>
+                </a>
+            </li>
+            <li class="animated blue-twitter">
+                <a href="https://twitter.com/bmbigi" class="tooltip" data-tooltip="Twitter" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated yellow">
+                <a href="mailto:bonganim@utexas.edu" class="tooltip" data-tooltip="Email" target="_blank">
+                    <i class="fa fa-envelope fa-lg"></i>
+                </a>
+            </li>
+        </ul>
+</footer>
+</body>
+</html>

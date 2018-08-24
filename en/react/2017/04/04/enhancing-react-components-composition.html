@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Enhancing React components, Composition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+                <li>
+                    <a href="/" class="logo"><i class="fa fa-superpowers" aria-hidden="true" style="
+                        font-size: 2em;
+                        margin: .5em;
+                    "></i></a>
+                </li>
+            </ul>
+            
+            <ul class="right">
+                <!-- <li>
+                    <a href="policy">
+                        <i class="fa fa-fw fa-bank"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="/dev-bytes">
+                         Dev Blog
+                    </a>
+                </li>
+            </ul>
+</nav>
+
+    <div class="container">
+        <h1>Enhancing React components, Composition  <span>April 04, 2017</span>  </h1>
+        <blockquote>
+  <p>At Facebook, we use React in thousands of components, and we haven’t found any
+use cases where we would recommend creating component inheritance hierarchies.</p>
+</blockquote>
+
+<p><em>Long live to composition, inheritance is dead.</em></p>
+
+<p>So, how do you <em>extend</em> a component in React?</p>
+
+<p>Well, it’s pretty obvious that the guys @Facebook consider inappropriate to
+inherit from parent components. Let’s look at alternatives:</p>
+
+<h2 id="planning-ahead-of-time">Planning ahead of time</h2>
+<p>There might be some cases where you have a component which can’t know what its
+children will be ahead of time (like most of us). For them, React gifts
+<code class="highlighter-rouge">props.children</code>:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">List</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">ul</span> <span class="nx">className</span><span class="o">=</span><span class="p">{</span><span class="s1">'List List-'</span> <span class="o">+</span> <span class="nx">props</span><span class="p">.</span><span class="nx">importance</span><span class="p">}</span><span class="o">&gt;</span>
+      <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="sr">/ul</span><span class="err">&gt;
+</span>    <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">DownloadMenu</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">List</span> <span class="nx">importance</span><span class="o">=</span><span class="s2">"High"</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span><span class="nx">Download</span> <span class="nx">SBCL</span><span class="o">&lt;</span><span class="sr">/li</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span><span class="nx">Download</span> <span class="nx">Racket</span><span class="o">&lt;</span><span class="sr">/li</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span><span class="nx">Download</span> <span class="nx">Haskell</span><span class="o">&lt;</span><span class="sr">/li</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/List</span><span class="err">&gt;
+</span>    <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>As we can see, <code class="highlighter-rouge">props.children</code> receives everything that’s in between the
+component’s open and closing tag.</p>
+
+<p>Furthermore, we can exploit <code class="highlighter-rouge">props</code> to fill voids:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">ListWithHeader</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">ul</span> <span class="nx">className</span><span class="o">=</span><span class="p">{</span><span class="s1">'List List-'</span> <span class="o">+</span> <span class="nx">props</span><span class="p">.</span><span class="nx">importance</span><span class="p">}</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">li</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"List List-Header"</span><span class="o">&gt;</span>
+        <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">header</span><span class="p">}</span>
+      <span class="o">&lt;</span><span class="sr">/li</span><span class="err">&gt;
+</span>      <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">children</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="sr">/ul</span><span class="err">&gt;
+</span>    <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">DownloadMenuWithHeader</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">List</span> <span class="nx">importance</span><span class="o">=</span><span class="s2">"High"</span> <span class="nx">header</span><span class="o">=</span><span class="p">{</span> <span class="o">&lt;</span><span class="nx">LispLogo</span> <span class="o">/&gt;</span> <span class="p">}</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span><span class="nx">Download</span> <span class="nx">SBCL</span><span class="o">&lt;</span><span class="sr">/li</span><span class="err">&gt;
+</span>      <span class="p">...</span>
+    <span class="o">&lt;</span><span class="sr">/List</span><span class="err">&gt;
+</span>    <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="generic-components-and-specialization">Generic components and specialization</h2>
+<p>So, we’ve got this great <em>FolderView</em> component</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">FolderView</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"FolderView"</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">folderName</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="nx">ul</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"FolderView FolderView-Actions"</span><span class="o">&gt;</span>
+        <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">availableActions</span><span class="p">}</span>
+      <span class="o">&lt;</span><span class="sr">/ul</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="nx">ul</span> <span class="nx">className</span><span class="o">=</span><span class="s2">"FolderView FolderView-Files"</span><span class="o">&gt;</span>
+        <span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">files</span><span class="p">}</span>
+      <span class="o">&lt;</span><span class="sr">/ul</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>    <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>This could represent any folder in our filesystem, however, we only want to
+<em>specialize</em> it so it shows only the Pictures and Desktop folders.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">DesktopFolder</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">FolderView</span> <span class="nx">folderName</span><span class="o">=</span><span class="s2">"Desktop"</span>
+      <span class="nx">availableActions</span><span class="o">=</span><span class="p">{</span>
+        <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span><span class="nx">Create</span> <span class="nx">Folder</span><span class="o">&lt;</span><span class="sr">/li</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span><span class="nx">Create</span> <span class="nx">Document</span><span class="o">&lt;</span><span class="sr">/li</span><span class="err">&gt;
+</span>      <span class="p">}</span>
+      <span class="nx">files</span><span class="o">=</span><span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">files</span><span class="p">}</span>
+      <span class="sr">/</span><span class="err">&gt;
+</span>    <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">PicturesFolder</span><span class="p">(</span><span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">FolderView</span>
+      <span class="nx">folderName</span><span class="o">=</span><span class="s2">"Pictures"</span>
+      <span class="nx">availableActions</span><span class="o">=</span><span class="p">{</span>
+        <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;</span><span class="nx">New</span> <span class="nx">Picture</span><span class="o">&lt;</span><span class="sr">/li</span><span class="err">&gt;
+</span>      <span class="p">}</span>
+      <span class="nx">files</span><span class="o">=</span><span class="p">{</span><span class="nx">props</span><span class="p">.</span><span class="nx">files</span><span class="p">}</span>
+      <span class="sr">/</span><span class="err">&gt;
+</span>    <span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>And just like so, we’ve <em>specialized</em> our component, without creating any
+inheritance hierarchy!</p>
+
+    </div>
+
+    <footer>
+        <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>
+        <ul>
+            <li class="animated pink">
+                <a href="https://dribbble.com/bmbigi" class="tooltip" data-tooltip="Dribbble" target="_blank">
+                    <i class="fa fa-dribbble fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated black">
+                <a href="https://github.com/bongani-m" class="tooltip" data-tooltip="GitHub" target="_blank">
+                    <i class="fa fa-github fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated instagram">
+                <a href="https://www.instagram.com/bmbigi/" class="tooltip" data-tooltip="Instagram" target="_blank">
+                    <i class="fa fa-instagram fa-2x"></i>
+                </a>
+            </li>
+            <li class="animated blue-twitter">
+                <a href="https://twitter.com/bmbigi" class="tooltip" data-tooltip="Twitter" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated yellow">
+                <a href="mailto:bonganim@utexas.edu" class="tooltip" data-tooltip="Email" target="_blank">
+                    <i class="fa fa-envelope fa-lg"></i>
+                </a>
+            </li>
+        </ul>
+</footer>
+</body>
+</html>

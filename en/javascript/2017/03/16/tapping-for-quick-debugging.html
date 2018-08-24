@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Tapping for quick debugging</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+                <li>
+                    <a href="/" class="logo"><i class="fa fa-superpowers" aria-hidden="true" style="
+                        font-size: 2em;
+                        margin: .5em;
+                    "></i></a>
+                </li>
+            </ul>
+            
+            <ul class="right">
+                <!-- <li>
+                    <a href="policy">
+                        <i class="fa fa-fw fa-bank"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="/dev-bytes">
+                         Dev Blog
+                    </a>
+                </li>
+            </ul>
+</nav>
+
+    <div class="container">
+        <h1>Tapping for quick debugging  <span>March 16, 2017</span>  </h1>
+        <p>This little beastie here is tap. A really useful function for quick-debugging
+chains of function calls, anonymous functions and, actually, whatever you just
+want to print.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">tap</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">x</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Why would you use instead of good old <code class="highlighter-rouge">console.log</code>? Let me show you an example:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">bank_totals_by_client</span><span class="p">(</span><span class="nx">bank_info</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">banks</span><span class="p">),</span> <span class="nx">table</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">c</span> <span class="o">=&gt;</span> <span class="nx">c</span><span class="p">.</span><span class="nx">balance</span> <span class="o">&gt;</span> <span class="mi">25000</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">sort</span><span class="p">((</span><span class="nx">c1</span><span class="p">,</span> <span class="nx">c2</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">c1</span><span class="p">.</span><span class="nx">balance</span> <span class="o">&lt;=</span> <span class="nx">c2</span><span class="p">.</span><span class="nx">balance</span> <span class="p">?</span> <span class="mi">1</span> <span class="p">:</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
+            <span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">c</span> <span class="o">=&gt;</span>
+                 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`</span><span class="p">${</span><span class="nx">c</span><span class="p">.</span><span class="nx">id</span><span class="p">}</span><span class="s2"> | </span><span class="p">${</span><span class="nx">c</span><span class="p">.</span><span class="nx">tax_number</span><span class="p">}</span><span class="s2"> (</span><span class="p">${</span><span class="nx">c</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2">) =&gt; </span><span class="p">${</span><span class="nx">c</span><span class="p">.</span><span class="nx">balance</span><span class="p">}</span><span class="s2">`</span><span class="p">));</span>
+</code></pre></div></div>
+
+<p>Now, suppose you’re getting nothing from this chain (possibly an error).
+Where is it failing? Maybe <code class="highlighter-rouge">bank_info</code> isn’t returning anything, so we’ll tap it:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">bank_totals_by_client</span><span class="p">(</span><span class="nx">tap</span><span class="p">(</span><span class="nx">bank_info</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">banks</span><span class="p">)),</span> <span class="nx">table</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Depending on our particular implementation, it might print something or not.
+I’ll assume the information that we got from our tapping was correct and
+therefore, bank_info isn’t causing anything.</p>
+
+<p>We must then move on to the next chain, filter.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">c</span> <span class="o">=&gt;</span> <span class="nx">tap</span><span class="p">(</span><span class="nx">c</span><span class="p">).</span><span class="nx">balance</span> <span class="o">&gt;</span> <span class="mi">25000</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Are we receiving any c’s (clients actually)? If so, then bank_totals_by_client
+works alright. Maybe it’s the condition within the filter?</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            <span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">c</span> <span class="o">=&gt;</span> <span class="nx">tap</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">balance</span> <span class="o">&gt;</span> <span class="mi">25000</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Ah! Sweet, we see nothing but <code class="highlighter-rouge">false</code> printed, so there’s no client with &gt;25000,
+that’s why the function was returning nothing.</p>
+
+<h2 id="bonus-a-more-advanced-tap">(Bonus) A more advanced tap.</h2>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">tap</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">fn</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">fn</span><span class="p">(</span><span class="nx">x</span><span class="p">));</span>
+    <span class="k">return</span> <span class="nx">x</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now we’re talking about a more advanced beast, what if we wanted to perform a
+certain operation <em>prior</em> to tapping? i.e, we want to access a certain object
+property, perform a logical operation, etc. with our tapped object? Then we
+call old good tap with an extra argument, a function to be applied at the moment
+of tapping.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">tap</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nx">x</span> <span class="o">=&gt;</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">===</span> <span class="mi">3</span><span class="p">;</span> <span class="c1">// prints 5, but expression evaluates to true, why :-)?</span>
+</code></pre></div></div>
+
+    </div>
+
+    <footer>
+        <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>
+        <ul>
+            <li class="animated pink">
+                <a href="https://dribbble.com/bmbigi" class="tooltip" data-tooltip="Dribbble" target="_blank">
+                    <i class="fa fa-dribbble fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated black">
+                <a href="https://github.com/bongani-m" class="tooltip" data-tooltip="GitHub" target="_blank">
+                    <i class="fa fa-github fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated instagram">
+                <a href="https://www.instagram.com/bmbigi/" class="tooltip" data-tooltip="Instagram" target="_blank">
+                    <i class="fa fa-instagram fa-2x"></i>
+                </a>
+            </li>
+            <li class="animated blue-twitter">
+                <a href="https://twitter.com/bmbigi" class="tooltip" data-tooltip="Twitter" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated yellow">
+                <a href="mailto:bonganim@utexas.edu" class="tooltip" data-tooltip="Email" target="_blank">
+                    <i class="fa fa-envelope fa-lg"></i>
+                </a>
+            </li>
+        </ul>
+</footer>
+</body>
+</html>

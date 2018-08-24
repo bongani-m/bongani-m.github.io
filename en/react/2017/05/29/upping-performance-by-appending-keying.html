@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Upping Performance by Appending/Keying</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+                <li>
+                    <a href="/" class="logo"><i class="fa fa-superpowers" aria-hidden="true" style="
+                        font-size: 2em;
+                        margin: .5em;
+                    "></i></a>
+                </li>
+            </ul>
+            
+            <ul class="right">
+                <!-- <li>
+                    <a href="policy">
+                        <i class="fa fa-fw fa-bank"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="/dev-bytes">
+                         Dev Blog
+                    </a>
+                </li>
+            </ul>
+</nav>
+
+    <div class="container">
+        <h1>Upping Performance by Appending/Keying  <span>May 29, 2017</span>  </h1>
+        <p>React uses a mechanism called <strong>reconciliation</strong> for efficient rendering on
+update.</p>
+
+<p><strong>Reconciliation</strong> works by recursively comparing the tree of DOM elements,
+the specifics of the algorithm might be found on the official documents or
+the source, which is always the best source.</p>
+
+<p>This mechanism is partly hidden, and as such, there are some conventions
+that might be followed to ease its inner workings.</p>
+
+<p>One such example is <strong>appending</strong> vs <strong>inserting</strong>.</p>
+
+<p><strong>Reconciliation</strong> compares the list of root’s nodes children at the same
+time, if two children differ, then React will mutate every one.</p>
+
+<p>So, for example, if you’ve got the following:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li&gt;</span>Sherlock Holmes<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;</span>John Hamish Watson<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</code></pre></div></div>
+
+<p>And you insert an element at the beginning</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li&gt;</span>Mycroft Holmes<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;</span>Sherlock Holmes<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;</span>John Hamish Watson<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</code></pre></div></div>
+
+<p>React will start of by comparing the old tree, where <code class="highlighter-rouge">&lt;li&gt;Second&lt;/li&gt;</code> is the
+first child and the new tree where <code class="highlighter-rouge">&lt;li&gt;First&lt;/li&gt;</code> is the new first child.
+Because they are different, it will mutate the children.</p>
+
+<p>If, instead of inserting good Mycroft you appended him, React would perform
+better, not touching Sherlock nor John.</p>
+
+<p>But you can’t always append, sometimes you’ve just got to insert.</p>
+
+<p>This is were <strong>keys</strong> come in. If you supply a <strong>key</strong> <em>attribute</em> then React
+will figure out an efficient transformation from the old tree to the new one.</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">key=</span><span class="s">"3"</span><span class="nt">&gt;</span>Mycroft Holmes<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">key=</span><span class="s">"1"</span><span class="nt">&gt;</span>Sherlock Holmes<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">key=</span><span class="s">"2"</span><span class="nt">&gt;</span>John Hamish Watson<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</code></pre></div></div>
+
+    </div>
+
+    <footer>
+        <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>
+        <ul>
+            <li class="animated pink">
+                <a href="https://dribbble.com/bmbigi" class="tooltip" data-tooltip="Dribbble" target="_blank">
+                    <i class="fa fa-dribbble fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated black">
+                <a href="https://github.com/bongani-m" class="tooltip" data-tooltip="GitHub" target="_blank">
+                    <i class="fa fa-github fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated instagram">
+                <a href="https://www.instagram.com/bmbigi/" class="tooltip" data-tooltip="Instagram" target="_blank">
+                    <i class="fa fa-instagram fa-2x"></i>
+                </a>
+            </li>
+            <li class="animated blue-twitter">
+                <a href="https://twitter.com/bmbigi" class="tooltip" data-tooltip="Twitter" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated yellow">
+                <a href="mailto:bonganim@utexas.edu" class="tooltip" data-tooltip="Email" target="_blank">
+                    <i class="fa fa-envelope fa-lg"></i>
+                </a>
+            </li>
+        </ul>
+</footer>
+</body>
+</html>

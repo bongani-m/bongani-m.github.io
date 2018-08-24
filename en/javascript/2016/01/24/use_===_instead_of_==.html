@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
+    <title>Use === instead of ==</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/main.css" />
     <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
 </head>
 <body>
     <nav>
@@ -35,26 +35,25 @@
             </ul>
 </nav>
 
-    <style type="text/css" media="screen">
-  .container {
-    margin: 10px auto;
-    max-width: 600px;
-    text-align: center;
-  }
-  h1 {
-    margin: 30px 0;
-    font-size: 4em;
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-</style>
+    <div class="container">
+        <h1>Use === instead of ==  <span>January 24, 2016</span>  </h1>
+        <p>The <code class="highlighter-rouge">==</code> (or <code class="highlighter-rouge">!=</code>) operator performs an automatic type conversion if needed. The <code class="highlighter-rouge">===</code> (or <code class="highlighter-rouge">!==</code>) operator will not perform any conversion. It compares the value and the type, which could be considered faster (<a href="http://jsperf.com/strictcompare">jsPref</a>) than <code class="highlighter-rouge">==</code>.</p>
 
-<div class="container">
-  <h1>404</h1>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">==</span>  <span class="mi">10</span>      <span class="c1">// is true</span>
+<span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">===</span> <span class="mi">10</span>      <span class="c1">// is false</span>
 
-  <p><strong>Page not found :(</strong></p>
-  <p>The requested page could not be found.</p>
-</div>
+<span class="s1">'10'</span> <span class="o">==</span>  <span class="mi">10</span>      <span class="c1">// is true</span>
+<span class="s1">'10'</span> <span class="o">===</span> <span class="mi">10</span>      <span class="c1">// is false</span>
+
+ <span class="p">[]</span>  <span class="o">==</span>  <span class="mi">0</span>       <span class="c1">// is true</span>
+ <span class="p">[]</span>  <span class="o">===</span> <span class="mi">0</span>       <span class="c1">// is false</span>
+
+ <span class="s1">''</span>  <span class="o">==</span>  <span class="kc">false</span>   <span class="c1">// is true but true == "a" is false</span>
+ <span class="s1">''</span>  <span class="o">===</span> <span class="kc">false</span>   <span class="c1">// is false </span>
+
+</code></pre></div></div>
+
+    </div>
 
     <footer>
         <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>

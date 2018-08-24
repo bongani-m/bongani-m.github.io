@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Differences between `undefined` and `null`</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+                <li>
+                    <a href="/" class="logo"><i class="fa fa-superpowers" aria-hidden="true" style="
+                        font-size: 2em;
+                        margin: .5em;
+                    "></i></a>
+                </li>
+            </ul>
+            
+            <ul class="right">
+                <!-- <li>
+                    <a href="policy">
+                        <i class="fa fa-fw fa-bank"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="/dev-bytes">
+                         Dev Blog
+                    </a>
+                </li>
+            </ul>
+</nav>
+
+    <div class="container">
+        <h1>Differences between `undefined` and `null`  <span>January 05, 2016</span>  </h1>
+        <ul>
+  <li><code class="highlighter-rouge">undefined</code> means a variable has not been declared, or has been declared but has not yet been assigned a value</li>
+  <li><code class="highlighter-rouge">null</code> is an assignment value that means “no value”</li>
+  <li>Javascript sets unassigned variables with a default value of <code class="highlighter-rouge">undefined</code></li>
+  <li>Javascript never sets a value to <code class="highlighter-rouge">null</code>. It is used by programmers to indicate that a <code class="highlighter-rouge">var</code> has no value.</li>
+  <li><code class="highlighter-rouge">undefined</code> is not valid in JSON while <code class="highlighter-rouge">null</code> is</li>
+  <li><code class="highlighter-rouge">undefined</code> typeof is <code class="highlighter-rouge">undefined</code></li>
+  <li><code class="highlighter-rouge">null</code> typeof is an <code class="highlighter-rouge">object</code>. <a href="http://www.2ality.com/2013/10/typeof-null.html">Why?</a></li>
+  <li>Both are primitives</li>
+  <li>Both are <a href="https://developer.mozilla.org/en-US/docs/Glossary/Falsy">falsy</a>
+(<code class="highlighter-rouge">Boolean(undefined) // false</code>, <code class="highlighter-rouge">Boolean(null) // false</code>)</li>
+  <li>
+    <p>You can know if a variable is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></p>
+
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typeof</span> <span class="nx">variable</span> <span class="o">===</span> <span class="s2">"undefined"</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>You can check if a variable is <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null">null</a></p>
+
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">variable</span> <span class="o">===</span> <span class="kc">null</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>The <strong>equality</strong> operator considers them equal, but the <strong>identity</strong> doesn’t</p>
+
+    <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kc">null</span> <span class="o">==</span> <span class="kc">undefined</span> <span class="c1">// true</span>
+
+<span class="kc">null</span> <span class="o">===</span> <span class="kc">undefined</span> <span class="c1">// false</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+    </div>
+
+    <footer>
+        <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>
+        <ul>
+            <li class="animated pink">
+                <a href="https://dribbble.com/bmbigi" class="tooltip" data-tooltip="Dribbble" target="_blank">
+                    <i class="fa fa-dribbble fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated black">
+                <a href="https://github.com/bongani-m" class="tooltip" data-tooltip="GitHub" target="_blank">
+                    <i class="fa fa-github fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated instagram">
+                <a href="https://www.instagram.com/bmbigi/" class="tooltip" data-tooltip="Instagram" target="_blank">
+                    <i class="fa fa-instagram fa-2x"></i>
+                </a>
+            </li>
+            <li class="animated blue-twitter">
+                <a href="https://twitter.com/bmbigi" class="tooltip" data-tooltip="Twitter" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated yellow">
+                <a href="mailto:bonganim@utexas.edu" class="tooltip" data-tooltip="Email" target="_blank">
+                    <i class="fa fa-envelope fa-lg"></i>
+                </a>
+            </li>
+        </ul>
+</footer>
+</body>
+</html>

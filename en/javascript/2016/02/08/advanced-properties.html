@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Advanced Javascript Properties</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+                <li>
+                    <a href="/" class="logo"><i class="fa fa-superpowers" aria-hidden="true" style="
+                        font-size: 2em;
+                        margin: .5em;
+                    "></i></a>
+                </li>
+            </ul>
+            
+            <ul class="right">
+                <!-- <li>
+                    <a href="policy">
+                        <i class="fa fa-fw fa-bank"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="/dev-bytes">
+                         Dev Blog
+                    </a>
+                </li>
+            </ul>
+</nav>
+
+    <div class="container">
+        <h1>Advanced Javascript Properties  <span>February 08, 2016</span>  </h1>
+        <p>It is possible to configure object properties in Javascript for example to set properties to be pseudo-private or readonly. This feature is available since ECMAScript 5.1, therefore supported by all recent browsers.</p>
+
+<p>To do so, you need to use the method <code class="highlighter-rouge">defineProperty</code> of the <code class="highlighter-rouge">Object</code> prototype like so:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="s1">'readonly'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">value</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+  <span class="na">writable</span><span class="p">:</span> <span class="kc">false</span>
+<span class="p">});</span>
+
+<span class="nx">a</span><span class="p">.</span><span class="nx">readonly</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">.</span><span class="nx">readonly</span><span class="p">);</span> <span class="c1">// 15</span>
+</code></pre></div></div>
+
+<p>The syntax is as follows:</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">dest</span><span class="p">,</span> <span class="nx">propName</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>or for multiple definitions:</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperties</span><span class="p">(</span><span class="nx">dest</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">propA</span><span class="p">:</span> <span class="nx">optionsA</span><span class="p">,</span>
+  <span class="na">propB</span><span class="p">:</span> <span class="nx">optionsB</span><span class="p">,</span> <span class="c1">//...</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>where options include the following attributes:</p>
+<ul>
+  <li><em>value</em>: if the property is not a getter (see below), value is a mandatory attribute. <code class="highlighter-rouge">{a: 12}</code> === <code class="highlighter-rouge">Object.defineProperty(obj, 'a', {value: 12})</code></li>
+  <li><em>writable</em>: set the property as readonly. Note that if the property is a nested objects, its properties are still editable.</li>
+  <li><em>enumerable</em>: set the property as hidden. That means that <code class="highlighter-rouge">for ... of</code> loops and <code class="highlighter-rouge">stringify</code> will not include the property in their result, but the property is still there. Note: That doesn’t mean that the property is private! It can still be accessible from the outside, it just means that it won’t be printed.</li>
+  <li><em>configurable</em>: set the property as non modifiable, e.g. protected from deletion or redefinition. Again, if the property is a nested object, its properties are still configurable.</li>
+</ul>
+
+<p>So in order to create a private constant property, you can define it like so:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="s1">'myPrivateProp'</span><span class="p">,</span> <span class="p">{</span><span class="na">value</span><span class="p">:</span> <span class="nx">val</span><span class="p">,</span> <span class="na">enumerable</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span> <span class="na">writable</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span> <span class="na">configurable</span><span class="p">:</span> <span class="kc">false</span><span class="p">});</span>
+</code></pre></div></div>
+
+<p>Besides configuring properties, <code class="highlighter-rouge">defineProperty</code> allows us to define <em>dynamic properties</em>, thanks to the second parameter being a string. For instance, let’s say that I want to create properties according to some external configuration:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">getTypeFromExternal</span><span class="p">():</span> <span class="kc">true</span> <span class="c1">// illegal in ES5.1</span>
+<span class="p">}</span>
+
+<span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">getTypeFromExternal</span><span class="p">(),</span> <span class="p">{</span><span class="na">value</span><span class="p">:</span> <span class="kc">true</span><span class="p">});</span> <span class="c1">// ok</span>
+
+<span class="c1">// For the example sake, ES6 introduced a new syntax:</span>
+<span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">[</span><span class="nx">getTypeFromExternal</span><span class="p">()]:</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>But that’s not all! Advanced properties allows us to create <strong>getters</strong> and <strong>setters</strong>, just like other OOP languages! In that case, one cannot use the <code class="highlighter-rouge">writable</code>, <code class="highlighter-rouge">enumerable</code> and <code class="highlighter-rouge">configurable</code> properties, but instead:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">Foobar</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">_foo</span><span class="p">;</span> <span class="c1">//  true private property</span>
+
+  <span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="s1">'foo'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">get</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">_foo</span><span class="p">;</span> <span class="p">}</span>
+    <span class="nl">set</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span> <span class="nx">_foo</span> <span class="o">=</span> <span class="nx">value</span> <span class="p">}</span>
+  <span class="p">});</span>
+
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">foobar</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Foobar</span><span class="p">();</span>
+<span class="nx">foobar</span><span class="p">.</span><span class="nx">foo</span><span class="p">;</span> <span class="c1">// 15</span>
+<span class="nx">foobar</span><span class="p">.</span><span class="nx">foo</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span> <span class="c1">// _foo = 20</span>
+</code></pre></div></div>
+
+<p>Aside for the obvious advantage of encapsulation and advanced accessors, you will notice that we didn’t “call” the getter, instead we just “get” the property without parentheses! This is awesome! For instance, let’s imagine that we have an object with long nested properties, like so:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span><span class="na">a</span><span class="p">:</span> <span class="p">{</span><span class="na">b</span><span class="p">:</span> <span class="p">{</span><span class="na">c</span><span class="p">:</span> <span class="p">[{</span><span class="na">d</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span> <span class="p">{</span><span class="na">d</span><span class="p">:</span> <span class="mi">20</span><span class="p">}]</span> <span class="p">}</span> <span class="p">}</span> <span class="p">};</span>
+</code></pre></div></div>
+
+<p>Now instead of doing <code class="highlighter-rouge">a.b.c[0].d</code> (where one of the properties can resolve to <code class="highlighter-rouge">undefined</code> and throw an error), we can instead create an alias:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Object</span><span class="p">.</span><span class="nx">defineProperty</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="s1">'firstD'</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">get</span><span class="p">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">a</span> <span class="o">&amp;&amp;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">b</span> <span class="o">&amp;&amp;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">b</span><span class="p">.</span><span class="nx">c</span> <span class="o">&amp;&amp;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">b</span><span class="p">.</span><span class="nx">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">b</span><span class="p">.</span><span class="nx">c</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">d</span> <span class="p">}</span>
+<span class="p">})</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">firstD</span><span class="p">)</span> <span class="c1">// 10</span>
+</code></pre></div></div>
+
+<h3 id="note">Note</h3>
+<p>If you define a getter without a setter and still try to set a value, you will get an error! This is particularly important when using helper functions such as <code class="highlighter-rouge">$.extend</code> or <code class="highlighter-rouge">_.merge</code>. Be careful!</p>
+
+<h3 id="links">Links</h3>
+
+<ul>
+  <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty">defineProperty</a></li>
+  <li><a href="http://bdadam.com/blog/defining-properties-in-javascript.html">Defining properties in JavaScript</a></li>
+</ul>
+
+    </div>
+
+    <footer>
+        <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>
+        <ul>
+            <li class="animated pink">
+                <a href="https://dribbble.com/bmbigi" class="tooltip" data-tooltip="Dribbble" target="_blank">
+                    <i class="fa fa-dribbble fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated black">
+                <a href="https://github.com/bongani-m" class="tooltip" data-tooltip="GitHub" target="_blank">
+                    <i class="fa fa-github fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated instagram">
+                <a href="https://www.instagram.com/bmbigi/" class="tooltip" data-tooltip="Instagram" target="_blank">
+                    <i class="fa fa-instagram fa-2x"></i>
+                </a>
+            </li>
+            <li class="animated blue-twitter">
+                <a href="https://twitter.com/bmbigi" class="tooltip" data-tooltip="Twitter" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated yellow">
+                <a href="mailto:bonganim@utexas.edu" class="tooltip" data-tooltip="Email" target="_blank">
+                    <i class="fa fa-envelope fa-lg"></i>
+                </a>
+            </li>
+        </ul>
+</footer>
+</body>
+</html>

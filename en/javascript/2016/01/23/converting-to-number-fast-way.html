@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
+    <title>Converting to number fast way</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/main.css" />
     <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
 </head>
 <body>
     <nav>
@@ -35,26 +35,23 @@
             </ul>
 </nav>
 
-    <style type="text/css" media="screen">
-  .container {
-    margin: 10px auto;
-    max-width: 600px;
-    text-align: center;
-  }
-  h1 {
-    margin: 30px 0;
-    font-size: 4em;
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-</style>
+    <div class="container">
+        <h1>Converting to number fast way  <span>January 23, 2016</span>  </h1>
+        <p>Converting strings to numbers is extremely common. The easiest and fastest (<a href="https://jsperf.com/number-vs-parseint-vs-plus/29">jsPerf</a>) way to achieve that would be using the <code class="highlighter-rouge">+</code> (plus) operator.</p>
 
-<div class="container">
-  <h1>404</h1>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">one</span> <span class="o">=</span> <span class="s1">'1'</span><span class="p">;</span>
 
-  <p><strong>Page not found :(</strong></p>
-  <p>The requested page could not be found.</p>
-</div>
+<span class="kd">var</span> <span class="nx">numberOne</span> <span class="o">=</span> <span class="o">+</span><span class="nx">one</span><span class="p">;</span> <span class="c1">// Number 1</span>
+</code></pre></div></div>
+
+<p>You can also use the <code class="highlighter-rouge">-</code> (minus) operator which type-converts the value into number but also negates it.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">one</span> <span class="o">=</span> <span class="s1">'1'</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">negativeNumberOne</span> <span class="o">=</span> <span class="o">-</span><span class="nx">one</span><span class="p">;</span> <span class="c1">// Number -1</span>
+</code></pre></div></div>
+
+    </div>
 
     <footer>
         <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>

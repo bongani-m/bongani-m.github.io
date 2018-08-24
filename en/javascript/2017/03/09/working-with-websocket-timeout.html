@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Working With Websocket Timeout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/post.css" />
+</head>
+<body>
+    <nav>
+        <ul>
+                <li>
+                    <a href="/" class="logo"><i class="fa fa-superpowers" aria-hidden="true" style="
+                        font-size: 2em;
+                        margin: .5em;
+                    "></i></a>
+                </li>
+            </ul>
+            
+            <ul class="right">
+                <!-- <li>
+                    <a href="policy">
+                        <i class="fa fa-fw fa-bank"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="/dev-bytes">
+                         Dev Blog
+                    </a>
+                </li>
+            </ul>
+</nav>
+
+    <div class="container">
+        <h1>Working With Websocket Timeout  <span>March 09, 2017</span>  </h1>
+        <p>In case of established websocket connection, server or firewall could timeout and terminate the connection after a period of inactivity. To deal with this situation, we send periodic message to the server. To control the timeout we will add two functions in our code : one to make sure connection keep alive and another one to cancel the keep alive. Also we need a common <code class="highlighter-rouge">timerID</code> variable.
+Let’s have a look on implementation-</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">timerID</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> 
+<span class="kd">function</span> <span class="nx">keepAlive</span><span class="p">()</span> <span class="p">{</span> 
+    <span class="kd">var</span> <span class="nx">timeout</span> <span class="o">=</span> <span class="mi">20000</span><span class="p">;</span>  
+    <span class="k">if</span> <span class="p">(</span><span class="nx">webSocket</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">==</span> <span class="nx">webSocket</span><span class="p">.</span><span class="nx">OPEN</span><span class="p">)</span> <span class="p">{</span>  
+        <span class="nx">webSocket</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">''</span><span class="p">);</span>  
+    <span class="p">}</span>  
+    <span class="nx">timerId</span> <span class="o">=</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">keepAlive</span><span class="p">,</span> <span class="nx">timeout</span><span class="p">);</span>  
+<span class="p">}</span>  
+<span class="kd">function</span> <span class="nx">cancelKeepAlive</span><span class="p">()</span> <span class="p">{</span>  
+    <span class="k">if</span> <span class="p">(</span><span class="nx">timerId</span><span class="p">)</span> <span class="p">{</span>  
+        <span class="nx">clearTimeout</span><span class="p">(</span><span class="nx">timerId</span><span class="p">);</span>  
+    <span class="p">}</span>  
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now as we have both of our desired function for the task, we will place <code class="highlighter-rouge">keepAlive()</code> function at the end of <code class="highlighter-rouge">onOpen()</code> method of websocket connection and <code class="highlighter-rouge">cancelKeepAlive()</code> function at the end of <code class="highlighter-rouge">onClose()</code> method of  websocket connection.</p>
+
+<p>Yes! We have perfectly implemented hack for websocket timeout problem.</p>
+
+    </div>
+
+    <footer>
+        <p>© <span id="year">2017</span> Bongani Mbigi. Made in Austin.</p>
+        <ul>
+            <li class="animated pink">
+                <a href="https://dribbble.com/bmbigi" class="tooltip" data-tooltip="Dribbble" target="_blank">
+                    <i class="fa fa-dribbble fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated black">
+                <a href="https://github.com/bongani-m" class="tooltip" data-tooltip="GitHub" target="_blank">
+                    <i class="fa fa-github fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated instagram">
+                <a href="https://www.instagram.com/bmbigi/" class="tooltip" data-tooltip="Instagram" target="_blank">
+                    <i class="fa fa-instagram fa-2x"></i>
+                </a>
+            </li>
+            <li class="animated blue-twitter">
+                <a href="https://twitter.com/bmbigi" class="tooltip" data-tooltip="Twitter" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i>
+                </a>
+            </li>
+            <li class="animated yellow">
+                <a href="mailto:bonganim@utexas.edu" class="tooltip" data-tooltip="Email" target="_blank">
+                    <i class="fa fa-envelope fa-lg"></i>
+                </a>
+            </li>
+        </ul>
+</footer>
+</body>
+</html>
